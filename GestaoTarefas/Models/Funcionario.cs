@@ -10,13 +10,21 @@ namespace GestaoTarefas.Models
     {
         public int FuncionarioId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Introduza o nome")]
+        [StringLength(200, MinimumLength = 10)]
         public string Nome { get; set; }
 
+        [Required(ErrorMessage = "Introduza o Telemóvel")]
+        [Phone(ErrorMessage = "Número Inválido")]
         public string Telemovel { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Introduza o CC/BI")]
+        [RegularExpression(@"\d{1, 9}", ErrorMessage ="CC Inválido")]
         public string CC { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Introduza o Email")]
+        [EmailAddress(ErrorMessage = "Email Inválido")]
         public string Email { get; set; }
+
     }
 }
