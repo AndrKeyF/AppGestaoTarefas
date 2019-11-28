@@ -26,5 +26,8 @@ namespace GestaoTarefas.Models
         [EmailAddress(ErrorMessage = "Email Inválido")]
         public string Email { get; set; }
 
+        public int CargoId { get; set; }
+        public Cargo Cargo { get; set; }
+
     }
 }
