@@ -19,7 +19,7 @@ namespace GestaoTarefas.Models
         public string Telemovel { get; set; }
 
         [Required(ErrorMessage = "Introduza o CC/BI")]
-        [RegularExpression(@"\d{1, 9}", ErrorMessage ="CC Inválido")]
+        [RegularExpression(@"\d{1,9}", ErrorMessage ="CC Inválido")]
         public string CC { get; set; }
 
         [Required(ErrorMessage = "Introduza o Email")]
