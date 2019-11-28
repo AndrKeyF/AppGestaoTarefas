@@ -13,5 +13,7 @@ namespace GestaoTarefas.Models
         [Required(ErrorMessage = "Introduza o nome")]
         [StringLength(50, MinimumLength = 5)]
         public string Nome { get; set; }
-    }
+        public ICollection<Funcionario> Funcionarios { get; set; } //tabela associado
+
+}
 }
