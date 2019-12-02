@@ -9,11 +9,11 @@ using GestaoTarefas.Models;
 
 namespace GestaoTarefas.Controllers
 {
-    public class ServicoController : Controller
+    public class ServicosController : Controller
     {
         private readonly servicoDbContext _context;
 
-        public ServicoController(servicoDbContext context)
+        public ServicosController(servicoDbContext context)
         {
             _context = context;
         }
