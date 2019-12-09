@@ -11,9 +11,9 @@ namespace GestaoTarefas.Controllers
 {
     public class ServicosController : Controller
     {
-        private readonly servicoDbContext _context;
+        private readonly GestaoTarefasDbContext _context;
 
-        public ServicosController(servicoDbContext context)
+        public ServicosController(GestaoTarefasDbContext context)
         {
             _context = context;
         }
