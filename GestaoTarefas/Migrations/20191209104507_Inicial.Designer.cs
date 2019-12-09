@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestaoTarefas.Migrations
 {
     [DbContext(typeof(GestaoTarefasDbContext))]
-    [Migration("20191128161634_Initial")]
-    partial class Initial
+    [Migration("20191209104507_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
