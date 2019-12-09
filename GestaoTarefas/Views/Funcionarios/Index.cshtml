@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<GestaoTarefas.Models.Funcionario>
 
 @{
-    ViewData["Title"] = "Funionários";
+    ViewData["Title"] = "Funcionários";
 }
 
-<h1>Funionários</h1>
+<h1>Funcionários</h1>
 
 <p>
-    <a asp-action="Create">Criar Novo</a>
+    <a asp-action="Create" class="btn btn-primary">Criar Novo</a>
+
 </p>
 <table class="table">
     <thead>
@@ -49,9 +50,9 @@
                 @Html.DisplayFor(modelItem => item.Cargo.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.FuncionarioId">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.FuncionarioId">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.FuncionarioId">Apagar</a>
+                <a asp-action="Edit" asp-route-id="@item.FuncionarioId" class="btn btn-warning">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.FuncionarioId" class="btn btn-info">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.FuncionarioId" class="btn btn-primary">Apagar</a>
             </td>
         </tr>
 }
