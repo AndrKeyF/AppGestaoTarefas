@@ -1,0 +1,54 @@
+﻿@model IEnumerable<GestaoTarefas.Models.Servico>
+
+@{
+    ViewData["Title"] = "Serviços";
+}
+
+<h1>Serviços</h1>
+
+<p>
+    <a asp-action="Create">Criar Novo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prioridade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datain)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datafim)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prioridade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datain)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datafim)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ServicoId">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.ServicoId">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.ServicoId">Apagar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
