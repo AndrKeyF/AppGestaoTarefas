@@ -1,0 +1,59 @@
+﻿@model IEnumerable<GestaoTarefas.Models.Funcionario>
+
+@{
+    ViewData["Title"] = "Funionários";
+}
+
+<h1>Funionários</h1>
+
+<p>
+    <a asp-action="Create">Criar Novo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telemovel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cargo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telemovel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cargo.Nome)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FuncionarioId">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.FuncionarioId">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.FuncionarioId">Apagar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
