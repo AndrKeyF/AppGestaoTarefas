@@ -16,7 +16,7 @@ namespace GestaoTarefas.Models
 
         public DbSet<GestaoTarefas.Models.Cargo> Cargo { get; set; }
 
-        public DbSet<GestaoTarefas.Models.Funcionario> Funcionario { get; set; }
+        public DbSet<Funcionario> Funcionario { get; set; }
 
         public DbSet<GestaoTarefas.Models.Servico> Servico { get; set; }
     }

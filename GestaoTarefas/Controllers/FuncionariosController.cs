@@ -11,6 +11,14 @@ namespace GestaoTarefas.Controllers
 {
     public class FuncionariosController : Controller
     {
+
+        private IGestaoTarefasRepository repository;
+
+        public FuncionariosController(IGestaoTarefasRepository repository)
+        {
+            this.repository = repository;
+        }
+
         private readonly GestaoTarefasDbContext _context;
 
         public FuncionariosController(GestaoTarefasDbContext context)

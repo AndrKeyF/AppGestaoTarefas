@@ -38,7 +38,13 @@ namespace GestaoTarefas
             services.AddDbContext<GestaoTarefasDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("GestaoTarefasDbContext")));
 
-        }
+            services.AddMvc();
+            services.AddTransient<IGestaoTarefasRepository, EFGestaoTarefasRepository>();
+                services.AddDbContext<GestaoTarefasDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionStringSportsStore"))
+                );
+
+            }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,6 +75,16 @@ namespace GestaoTarefas
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            if (env.IsDevelopment())
+            {
+                using (var serviceScope = app.ApplicationServices.CreateScope())
+                {
+                    var db = serviceScope.ServiceProvider.GetService<GestaoTarefasDbContext>();
+
+                    SeedData.Populate(db);
+                }
+            }
         }
     }
 }
