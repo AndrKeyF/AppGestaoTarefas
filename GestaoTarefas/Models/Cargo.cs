@@ -10,8 +10,8 @@ namespace GestaoTarefas.Models
     {
         public int CargoId { get; set; }
 
-        [Required(ErrorMessage = "Introduza o nome")]
-        [StringLength(50, MinimumLength = 5)]
+        [Required(ErrorMessage = "Introduza o nome!")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Minimo de letras 5 e máximo 50!!")]
         public string Nome { get; set; }
         public ICollection<Funcionario> Funcionarios { get; set; } //tabela associado
 
