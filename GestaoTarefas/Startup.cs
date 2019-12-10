@@ -33,18 +33,17 @@ namespace GestaoTarefas
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            services.AddDbContext<GestaoTarefasDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("GestaoTarefasDbContext")));
 
+            services.AddRazorPages();
             services.AddMvc();
+            services.AddControllersWithViews();
+
             services.AddTransient<IGestaoTarefasRepository, EFGestaoTarefasRepository>();
                 services.AddDbContext<GestaoTarefasDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ConnectionStringSportsStore"))
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionStringsGestaoTarefas"))
                 );
-
-            }
+                
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

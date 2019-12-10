@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace GestaoTarefas.Models
 {
-        public class EFSportsStoreRepository : IGestaoTarefasRepository
+        public class EFGestaoTarefasRepository : IGestaoTarefasRepository
         {
             private GestaoTarefasDbContext db;
 
-            public EFSportsStoreRepository(GestaoTarefasDbContext db)
+            public EFGestaoTarefasRepository(GestaoTarefasDbContext db)
             {
                 this.db = db;
             }
