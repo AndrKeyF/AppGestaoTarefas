@@ -1,10 +1,10 @@
-﻿@model IEnumerable<GestaoTarefas.Models.Funcionario>
+﻿@model PaginationViewModel
 
 @{
     ViewData["Title"] = "Funcionários";
 }
 
-    <p> </p>
+<p> </p>
 <h1>Funcionários</h1>
 
 <p>
@@ -15,47 +15,61 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
+                Nome
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Telemovel)
+               Telemovel
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CC)
+               CC
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+               Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cargo)
+              Cargo
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telemovel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cargo.Nome)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FuncionarioId" class="btn btn-warning">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.FuncionarioId" class="btn btn-info">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.FuncionarioId" class="btn btn-primary">Apagar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Funcionarios)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telemovel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cargo.Nome)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FuncionarioId" class="btn btn-warning">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.FuncionarioId" class="btn btn-info">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.FuncionarioId" class="btn btn-primary">Apagar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@for (int i = Model.FirstPageShow; i <= Model.LastPageShow; i++)
+{
+    @if (i == Model.CurrentPage)
+    {
+        <a href="#" class="btn btn-info">@i</a>
+    }
+    else
+    {
+        <a asp-action="Index" asp-route-page="@i"
+           class="btn btn-outline-info">@i</a>
+           }
+}

@@ -10,7 +10,7 @@ namespace GestaoTarefas.Models
     {
         public static void Populate(GestaoTarefasDbContext db)
         {
-            PopulateFuncionario(db);
+           // PopulateFuncionario(db);
             PopulateCargo(db);
         }
 
@@ -19,18 +19,20 @@ namespace GestaoTarefas.Models
             if (db.Cargo.Any()) return;
 
             db.Cargo.AddRange(
-                new Cargo { CargoId = 1, Nome = "Professor" },
-                new Cargo { CargoId = 2, Nome = "Diretor" },
-                new Cargo { CargoId = 3, Nome = "Presidente" },
-                new Cargo { CargoId = 4, Nome = "Vice-Presidente" },
-                new Cargo { CargoId = 5, Nome = "Secretário" },
-                new Cargo { CargoId = 6, Nome = "Tesoureiro" },
-                new Cargo { CargoId = 7, Nome = "Auxiliar de Limpeza"}
+                new Cargo {Nome = "Professor" },
+                new Cargo {Nome = "Diretor" },
+                new Cargo {Nome = "Presidente" },
+                new Cargo {Nome = "Vice-Presidente" },
+                new Cargo {Nome = "Secretário" },
+                new Cargo {Nome = "Tesoureiro" },
+                new Cargo {Nome = "Auxiliar de Limpeza"}
 
             );
 
             db.SaveChanges();
         }
+        
+        /*
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
         {
             if (db.Funcionario.Any()) return;
@@ -43,7 +45,7 @@ namespace GestaoTarefas.Models
             );
 
             db.SaveChanges();
-        }
+        }*/
 
     }
 }
