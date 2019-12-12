@@ -8,6 +8,7 @@ namespace GestaoTarefas.Models
     public class PaginationViewModel
     {
         public IEnumerable<Funcionario> Funcionarios { get; set; }
+        public IEnumerable<Cargo> Cargos { get; set; }
 
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
