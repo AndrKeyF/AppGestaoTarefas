@@ -11,6 +11,13 @@ namespace GestaoTarefas.Controllers
 {
     public class FuncionariosController : Controller
     {
+
+
+        private int NUMBER_PAGES_BEFORE_AND_AFTER = 2;
+        private decimal NUMBER_FUNC_PER_PAGE = 2;
+        private int FUNC_PER_PAGE = 2;
+
+
         private readonly GestaoTarefasDbContext _context;
 
         public FuncionariosController(GestaoTarefasDbContext context)
@@ -19,11 +26,21 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Funcionarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var gestaoTarefasDbContext = _context.Funcionario.Include(f => f.Cargo);
-            return View(await gestaoTarefasDbContext.ToListAsync());
+            decimal numberFuncionarios = _context.Funcionario.Count();
+            PaginationViewModel vm = new PaginationViewModel
+            {
+                Funcionarios = _context.Funcionario.OrderBy(p => p.Nome).Skip((page - 1) * FUNC_PER_PAGE).Take(FUNC_PER_PAGE),
+                CurrentPage = page,
+                FirstPageShow = Math.Max(1, page - NUMBER_PAGES_BEFORE_AND_AFTER),
+                TotalPages = (int)Math.Ceiling(numberFuncionarios / NUMBER_FUNC_PER_PAGE)
+            };
+            vm.LastPageShow = Math.Min(vm.TotalPages, page + NUMBER_PAGES_BEFORE_AND_AFTER);
+            return View(vm);
         }
+
+
 
         // GET: Funcionarios/Details/5
         public async Task<IActionResult> Details(int? id)
