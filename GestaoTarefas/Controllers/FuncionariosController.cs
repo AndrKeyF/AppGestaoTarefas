@@ -14,8 +14,8 @@ namespace GestaoTarefas.Controllers
 
 
         private int NUMBER_PAGES_BEFORE_AND_AFTER = 2;
-        private decimal NUMBER_FUNC_PER_PAGE = 2;
-        private int FUNC_PER_PAGE = 2;
+        private decimal NUMBER_FUNC_PER_PAGE = 5;
+        private int FUNC_PER_PAGE = 5;
 
 
         private readonly GestaoTarefasDbContext _context;
@@ -31,7 +31,7 @@ namespace GestaoTarefas.Controllers
             decimal numberFuncionarios = _context.Funcionario.Count();
             PaginationViewModel vm = new PaginationViewModel
             {
-                Funcionarios = _context.Funcionario.OrderBy(p => p.Nome).Skip((page - 1) * FUNC_PER_PAGE).Take(FUNC_PER_PAGE),
+                Funcionarios = _context.Funcionario.OrderBy(p => p.Nome).Skip((page - 1) * FUNC_PER_PAGE).Take(FUNC_PER_PAGE).Include(f => f.Cargo),
                 CurrentPage = page,
                 FirstPageShow = Math.Max(1, page - NUMBER_PAGES_BEFORE_AND_AFTER),
                 TotalPages = (int)Math.Ceiling(numberFuncionarios / NUMBER_FUNC_PER_PAGE)
