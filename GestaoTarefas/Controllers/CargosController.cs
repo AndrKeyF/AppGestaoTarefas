@@ -75,7 +75,8 @@ namespace GestaoTarefas.Controllers
             {
                 _context.Add(cargo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View("Note", cargo);
+                //return RedirectToAction(nameof(Index));
             }
             return View(cargo);
         }
@@ -165,4 +166,5 @@ namespace GestaoTarefas.Controllers
             return _context.Cargo.Any(e => e.CargoId == id);
         }
     }
+   
 }
