@@ -158,7 +158,8 @@ namespace GestaoTarefas.Controllers
             var cargo = await _context.Cargo.FindAsync(id);
             _context.Cargo.Remove(cargo);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View("NoteD", cargo);
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool CargoExists(int id)
