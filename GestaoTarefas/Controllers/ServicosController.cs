@@ -11,6 +11,12 @@ namespace GestaoTarefas.Controllers
 {
     public class ServicosController : Controller
     {
+
+        private int NUMBER_PAGES_BEFORE_AND_AFTER = 5;
+        private decimal NUMBER_SERV_PER_PAGE = 5;
+        private int SERV_PER_PAGE = 5;
+
+
         private readonly GestaoTarefasDbContext _context;
 
         public ServicosController(GestaoTarefasDbContext context)
@@ -19,10 +25,21 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Servicos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Servico.ToListAsync());
+            decimal numberServicos = _context.Servico.Count();
+            PaginationViewModelServico vm = new PaginationViewModelServico
+            {
+                Servicos = _context.Servico.OrderBy(p => p.Nome).Skip((page - 1) * SERV_PER_PAGE).Take(SERV_PER_PAGE),
+                CurrentPage = page,
+                FirstPageShow = Math.Max(1, page - NUMBER_PAGES_BEFORE_AND_AFTER),
+                TotalPages = (int)Math.Ceiling(numberServicos / NUMBER_SERV_PER_PAGE)
+            };
+            vm.LastPageShow = Math.Min(vm.TotalPages, page + NUMBER_PAGES_BEFORE_AND_AFTER);
+            return View(vm);
         }
+
+
 
         // GET: Servicos/Details/5
         public async Task<IActionResult> Details(int? id)

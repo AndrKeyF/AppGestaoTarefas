@@ -76,19 +76,10 @@ namespace GestaoTarefas.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Datafim")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Datain")
-                        .HasColumnType("datetime2");
-
+                    
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Prioridade")
-                        .HasColumnType("bit");
 
                     b.HasKey("ServicoId");
 

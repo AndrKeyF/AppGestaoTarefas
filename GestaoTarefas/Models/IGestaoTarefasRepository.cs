@@ -8,5 +8,8 @@ namespace GestaoTarefas.Models
     public class IGestaoTarefasRepository
     {
         IEnumerable<Funcionario> Funcionarios { get; }
+
+        IEnumerable<Servico> Servicos { get; }
+
     }
 }
