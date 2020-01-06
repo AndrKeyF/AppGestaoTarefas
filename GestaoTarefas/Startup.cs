@@ -33,11 +33,16 @@ namespace GestaoTarefas
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            services.AddDbContext<GestaoTarefasDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("GestaoTarefasDbContext")));
 
+            services.AddRazorPages();
+            services.AddMvc();
+            services.AddControllersWithViews();
+
+            services.AddTransient<IGestaoTarefasRepository, EFGestaoTarefasRepository>();
+                services.AddDbContext<GestaoTarefasDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionStringsGestaoTarefas"))
+                );
+                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +74,16 @@ namespace GestaoTarefas
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            if (env.IsDevelopment())
+            {
+                using (var serviceScope = app.ApplicationServices.CreateScope())
+                {
+                    var db = serviceScope.ServiceProvider.GetService<GestaoTarefasDbContext>();
+
+                    SeedData.Populate(db);
+                }
+            }
         }
     }
 }
