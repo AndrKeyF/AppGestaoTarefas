@@ -29,7 +29,7 @@ namespace GestaoTarefas.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             decimal numberFuncionarios = _context.Funcionario.Count();
-            PaginationViewModel vm = new PaginationViewModel
+            PaginationVMFuncionario vm = new PaginationVMFuncionario
             {
                 Funcionarios = _context.Funcionario.OrderBy(p => p.Nome).Skip((page - 1) * FUNC_PER_PAGE).Take(FUNC_PER_PAGE).Include(f => f.Cargo),
                 CurrentPage = page,
@@ -79,7 +79,8 @@ namespace GestaoTarefas.Controllers
             {
                 _context.Add(funcionario);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return View("Note", funcionario);
             }
             ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
             return View(funcionario);
@@ -132,7 +133,8 @@ namespace GestaoTarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return View("NoteE", funcionario);
             }
             ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
             return View(funcionario);
@@ -165,7 +167,8 @@ namespace GestaoTarefas.Controllers
             var funcionario = await _context.Funcionario.FindAsync(id);
             _context.Funcionario.Remove(funcionario);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return View("NoteD", funcionario);
         }
 
         private bool FuncionarioExists(int id)

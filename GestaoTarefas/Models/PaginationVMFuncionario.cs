@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GestaoTarefas.Models
 {
-    public class PaginationViewModel
+    public class PaginationVMFuncionario
     {
         public IEnumerable<Funcionario> Funcionarios { get; set; }
 
@@ -14,4 +14,4 @@ namespace GestaoTarefas.Models
         public int FirstPageShow { get; set; }
         public int LastPageShow { get; set; }
     }
-}
+}   
