@@ -127,7 +127,8 @@ namespace GestaoTarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return View("NoteE", cargo);
             }
             return View(cargo);
         }
