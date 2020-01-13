@@ -10,17 +10,8 @@ namespace GestaoTarefas.Models
     {
         public int ServicoId { get; set; }
 
-        [Required(ErrorMessage = "Insira o seu nome")]
-        public string Nome  { get; set; }
 
-        [Required(ErrorMessage = "Escolha a prioridade")]
-        public Boolean Prioridade { get; set; }
-
-        public DateTime Datain { get; set; }
-
-        public DateTime Datafim { get; set; }
-
-
-
+        [Required(ErrorMessage = "Introduza o nome")] 
+        public string Nome { get; set; }
     }
 }
