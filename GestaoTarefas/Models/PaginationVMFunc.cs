@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GestaoTarefas.Models
 {
-    public class PaginationVMFuncionario
+    public class PaginationVMFunc
     {
         public IEnumerable<Funcionario> Funcionarios { get; set; }
 

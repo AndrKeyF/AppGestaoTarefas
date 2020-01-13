@@ -29,7 +29,7 @@ namespace GestaoTarefas.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             decimal numberFuncionarios = _context.Funcionario.Count();
-            PaginationVMFuncionario vm = new PaginationVMFuncionario
+            PaginationVMFunc vm = new PaginationVMFunc
             {
                 Funcionarios = _context.Funcionario.OrderBy(p => p.Nome).Skip((page - 1) * FUNC_PER_PAGE).Take(FUNC_PER_PAGE).Include(f => f.Cargo),
                 CurrentPage = page,
