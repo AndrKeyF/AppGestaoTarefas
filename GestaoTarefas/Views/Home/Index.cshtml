@@ -2,12 +2,17 @@
     ViewData["Title"] = "Gestão de Tarefas";
 }
 
+  
     <div class="text-center">
-        <h1 class="display-4">Bem-Vindo</h1>
-        <p>...</p>
-        
-        <img src="~/image/pasto.png" alt="logo" width=700 height=400>
+        @if (User.IsInRole("cris") || User.IsInRole("andr") || User.IsInRole("tig"))
+        {<p>...</p>
+            <img src="~/image/pasto.png" alt="logo" width=700 height=400>
+        }
+        else
+        {
+            <h1 class="display-4">Bem-Vindo</h1>
+            <p>...</p>
 
-        
-        
+            <img src="~/image/pasto.png" alt="logo" width=700 height=400>
+        }
     </div>

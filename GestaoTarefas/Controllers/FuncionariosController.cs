@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoTarefas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestaoTarefas.Controllers
 {
+    [Authorize(Policy = "CanManageGestaoTarefas")]
+    //[Authorize(Roles = "andr, cris,tig ")]
     public class FuncionariosController : Controller
     {
 
