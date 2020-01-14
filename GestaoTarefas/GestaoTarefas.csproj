@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-GestaoTarefas-E7FFE081-B8EC-475B-9CBC-7BFE4AE5F10E</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Departamentos\**" />
+    <Content Remove="Views\Departamentos\**" />
+    <EmbeddedResource Remove="Views\Departamentos\**" />
+    <None Remove="Views\Departamentos\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
