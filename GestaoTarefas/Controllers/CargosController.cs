@@ -73,14 +73,14 @@ namespace GestaoTarefas.Controllers
                     break;
             }
             
-            int CARG_PER_PAGE = 3;
+            /*int CARG_PER_PAGE = 3;
             int NUMBER_PAGES_BEFORE_AND_AFTER=1;
 
             return View(await PaginationVMCargo<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, CARG_PER_PAGE, NUMBER_PAGES_BEFORE_AND_AFTER));
+            */
 
-
-            //int pageSize = 5;
-            //return View(await PaginatedList<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, pageSize));
+            int pageSize = 5;
+            return View(await PaginatedList<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 
