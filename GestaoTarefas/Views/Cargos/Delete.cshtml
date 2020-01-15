@@ -4,11 +4,9 @@
     ViewData["Title"] = "Apagar";
 }
 
-    <h1>Apagar</h1>
-
+<p> </p>
 <h3>Tem acerteza que quer apagar?</h3>
 <div>
-    <h4>Cargo</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -21,7 +19,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="CargoId" />
-        <input type="submit" value="Apagar" class="btn btn-danger" /> |
-        <a asp-action="Index">Voltar</a>
+        <input type="submit" value="Apagar" class="btn btn-primary" /> |
+        <a asp-action="Index"  class="btn btn-outline-info">Voltar</a>
     </form>
 </div>

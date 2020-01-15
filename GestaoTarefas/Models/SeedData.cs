@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +10,16 @@ namespace GestaoTarefas.Models
 {
     public static class SeedData
     {
+        private const string ANDRE_ROLE = "andr";
+        private const string CRIS_ROLE = "cris";
+        private const string TIAGO_ROLE = "tig";
+
         public static void Populate(GestaoTarefasDbContext db)
         {
-           // PopulateFuncionario(db);
             PopulateCargo(db);
-            PopulateServico(db);
         }
 
-        private static void PopulateCargo(GestaoTarefasDbContext db)
+      private static void PopulateCargo(GestaoTarefasDbContext db)
         {
             if (db.Cargo.Any()) return;
 
@@ -48,22 +52,205 @@ namespace GestaoTarefas.Models
 
             db.SaveChanges();
         }
-
-
+        
         /*
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
         {
+
             if (db.Funcionario.Any()) return;
 
+            Cargo cargo = db.Cargo
+                .FirstOrDefault(m => m.Nome == "Professor");
+            if (cargo == null)
+            {
+                db.Cargo.AddRange(
+                cargo = new Cargo { Nome = "Professor" }
+ 
+                );
+                db.SaveChanges();
+            }
+
             db.Funcionario.AddRange(
-                new Funcionario { Nome = "André Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = 1},
-                new Funcionario { Nome = "Filipe Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail1@mail.pt", CargoId = 2},
-                new Funcionario { Nome = "Paulo Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail2@mail.pt", CargoId = 5}
+                new Funcionario { Nome = "André Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo.CargoId },
+                new Funcionario { Nome = "Filipe Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail1@mail.pt", CargoId = cargo.CargoId },
+                new Funcionario { Nome = "Paulo Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail2@mail.pt", CargoId = cargo.CargoId }
+            );
+
+            //Cargo Diretor
+            Cargo cargo1 = db.Cargo
+               .FirstOrDefault(m => m.Nome == "Diretor");
+            if (cargo1 == null)
+            {
+                db.Cargo.AddRange(
+                cargo1 = new Cargo { Nome = "Diretor" }
+
+                );
+                db.SaveChanges();
+            }
+
+            db.Funcionario.AddRange(
+                new Funcionario { Nome = "Cristiana Cardoso", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo1.CargoId }  
+            );
+
+            //Cargo Presidente
+            Cargo cargo2 = db.Cargo
+               .FirstOrDefault(m => m.Nome == "Presidente");
+            if (cargo2 == null)
+            {
+                db.Cargo.AddRange(
+                cargo2 = new Cargo { Nome = "Presidente" }
+
+                );
+                db.SaveChanges();
+            }
+
+            db.Funcionario.AddRange(
+                new Funcionario { Nome = "Tiago Santos", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo2.CargoId }
+            );
+
+            //Cargo Auxiliar
+
+            Cargo cargo3 = db.Cargo
+               .FirstOrDefault(m => m.Nome == "Auxiliar de Limpeza");
+            if (cargo3 == null)
+            {
+                db.Cargo.AddRange(
+                cargo3 = new Cargo { Nome = "Auxiliar de Limpeza" }
+
+                );
+                db.SaveChanges();
+            }
+
+            db.Funcionario.AddRange(
+                new Funcionario { Nome = "Paula Pereira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
+                new Funcionario { Nome = "Ana Vitória", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
+                new Funcionario { Nome = "Rui Carvalho", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
+                new Funcionario { Nome = "Américo Costa", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
+                new Funcionario { Nome = "Laurinda Rocha", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId }
 
             );
 
             db.SaveChanges();
-        }*/
+
+            //Cargo Secretário
+            Cargo cargo4 = db.Cargo
+               .FirstOrDefault(m => m.Nome == "Secretário");
+            if (cargo4 == null)
+            {
+                db.Cargo.AddRange(
+                cargo4 = new Cargo { Nome = "Secretário" }
+
+                );
+                db.SaveChanges();
+            }
+
+            db.Funcionario.AddRange(
+                new Funcionario { Nome = "Paulo Cardoso", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
+                new Funcionario { Nome = "Amilcar Santos", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
+                new Funcionario { Nome = "Vera Orquidea", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
+                new Funcionario { Nome = "Roberto Adelino", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
+                new Funcionario { Nome = "Amélia Chique", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId }
+
+            );
+
+            db.SaveChanges();
+        }
+
+
+        ////////////User Login
+        public static async Task PopulateUsersAsync(UserManager<IdentityUser> userManager)  //names
+        {
+            const string ANDRE_USERNAME = "andre@ipg.pt";
+            const string ANDRE_PASSWORD = "Secret123$";
+
+            const string CRIS_USERNAME = "cristiana@ipg.pt";
+            const string CRIS_PASSWORD = "Secret123$";
+
+
+            const string TIAGO_USERNAME = "tiago@ipg.pt";
+            const string TIAGO_PASSWORD = "Secret123$";
+
+
+            IdentityUser user = await userManager.FindByNameAsync(ANDRE_USERNAME);//await -esperar
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = ANDRE_USERNAME,
+                    Email = ANDRE_USERNAME
+                };
+
+                await userManager.CreateAsync(user, ANDRE_PASSWORD);
+            }
+
+            if (!await userManager.IsInRoleAsync(user, ANDRE_ROLE))
+            {
+                await userManager.AddToRoleAsync(user, ANDRE_ROLE);
+            }
+
+            user = await userManager.FindByNameAsync(ANDRE_USERNAME);
+
+
+
+            user = await userManager.FindByNameAsync(CRIS_USERNAME);
+
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = CRIS_USERNAME,
+                    Email = CRIS_USERNAME
+                };
+
+                await userManager.CreateAsync(user, CRIS_PASSWORD);
+            }
+
+            if (!await userManager.IsInRoleAsync(user, CRIS_ROLE))
+            {
+                await userManager.AddToRoleAsync(user, CRIS_ROLE);
+            }
+
+
+
+            user = await userManager.FindByNameAsync(TIAGO_USERNAME);
+
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = TIAGO_USERNAME,
+                    Email = TIAGO_USERNAME
+                };
+
+                await userManager.CreateAsync(user, TIAGO_PASSWORD);
+            }
+
+            if (!await userManager.IsInRoleAsync(user, TIAGO_ROLE))
+            {
+                await userManager.AddToRoleAsync(user, TIAGO_ROLE);
+            }
+        }
+
+        public static async Task CreateRolesAsync(RoleManager<IdentityRole> roleManager)
+        {
+
+
+            if (!await roleManager.RoleExistsAsync(ANDRE_ROLE))
+            {
+                await roleManager.CreateAsync(new IdentityRole(ANDRE_ROLE));
+            }
+
+            if (!await roleManager.RoleExistsAsync(CRIS_ROLE))
+            {
+                await roleManager.CreateAsync(new IdentityRole(CRIS_ROLE));
+            }
+
+            if (!await roleManager.RoleExistsAsync(TIAGO_ROLE))
+            {
+                await roleManager.CreateAsync(new IdentityRole(TIAGO_ROLE));
+            }
+        }
+    
 
     }
 }
