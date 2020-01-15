@@ -39,10 +39,7 @@ namespace GestaoTarefas.Controllers
             vm.LastPageShow = Math.Min(vm.TotalPages, page + NUMBER_PAGES_BEFORE_AND_AFTER);
             return View(vm);
         }*/
-        public async Task<IActionResult> Index(string sortOrder,
-    string currentFilter,
-    string searchString,
-    int? pageNumber)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -58,32 +55,34 @@ namespace GestaoTarefas.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var students = from s in _context.Cargo
-                           select s;
+            var cargos = from c in _context.Cargo
+                           select c;
             
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.Nome.Contains(searchString));
+                cargos = cargos.Where(c => c.Nome.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    students = students.OrderByDescending(s => s.Nome);
+                    cargos = cargos.OrderByDescending(c => c.Nome);
                     break;
                 
                 default:
-                    students = students.OrderBy(s => s.Nome);
+                    cargos = cargos.OrderBy(c => c.Nome);
                     break;
             }
             
             int CARG_PER_PAGE = 3;
             int NUMBER_PAGES_BEFORE_AND_AFTER=1;
 
+            return View(await PaginationVMCargo<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, CARG_PER_PAGE, NUMBER_PAGES_BEFORE_AND_AFTER));
 
-            return View(await PaginationVMCargo<Cargo>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, CARG_PER_PAGE, NUMBER_PAGES_BEFORE_AND_AFTER));
-            
+
+            //int pageSize = 5;
+            //return View(await PaginatedList<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-       
+
 
         // GET: Cargos/Details/5
         public async Task<IActionResult> Details(int? id)
