@@ -16,7 +16,7 @@ namespace GestaoTarefas.Models
 
         }
 
-        private static void PopulateCargo(GestaoTarefasDbContext db)
+      private static void PopulateCargo(GestaoTarefasDbContext db)
         {
             if (db.Cargo.Any()) return;
 
