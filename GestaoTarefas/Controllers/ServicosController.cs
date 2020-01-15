@@ -9,6 +9,7 @@ using GestaoTarefas.Models;
 
 namespace GestaoTarefas.Controllers
 {
+    
     public class ServicosController : Controller
     {
         private readonly GestaoTarefasDbContext _context;
@@ -18,13 +19,13 @@ namespace GestaoTarefas.Controllers
             _context = context;
         }
 
-        // GET: Servico
+        // GET: Servicos
         public async Task<IActionResult> Index()
         {
             return View(await _context.Servico.ToListAsync());
         }
 
-        // GET: Servico/Details/5
+        // GET: Servicos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,18 +43,18 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Create
+        // GET: Servicos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Servico/Create
+        // POST: Servicos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServicoId,Nome,Prioridade,Datain,Datafim")] Servico servico)
+        public async Task<IActionResult> Create([Bind("ServicoId,Nome")] Servico servico)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +65,7 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Edit/5
+        // GET: Servicos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,12 +81,12 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // POST: Servico/Edit/5
+        // POST: Servicos/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServicoId,Nome,Prioridade,Datain,Datafim")] Servico servico)
+        public async Task<IActionResult> Edit(int id, [Bind("ServicoId,Nome")] Servico servico)
         {
             if (id != servico.ServicoId)
             {
@@ -115,7 +116,7 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Delete/5
+        // GET: Servicos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +134,7 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // POST: Servico/Delete/5
+        // POST: Servicos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
