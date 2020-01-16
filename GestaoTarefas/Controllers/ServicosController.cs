@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoTarefas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestaoTarefas.Controllers
 {
-    
+    [Authorize(Policy = "CanManageGestaoTarefas")]
     public class ServicosController : Controller
     {
         private readonly GestaoTarefasDbContext _context;
@@ -20,10 +21,47 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Servicos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Servico.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var servicos = from s in _context.Servico
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                servicos = servicos.Where(s => s.Nome.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    servicos = servicos.OrderByDescending(s => s.Nome);
+                    break;
+
+                default:
+                    servicos = servicos.OrderBy(s => s.Nome);
+                    break;
+            }
+
+
+
+            int pageSize = 5;
+            return View(await PaginatedList<Servico>.CreateAsync(servicos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
+
 
         // GET: Servicos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -59,8 +97,9 @@ namespace GestaoTarefas.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(servico);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync(); 
+                return View("NoteCriarS", servico);
+                //return RedirectToAction(nameof(Index));
             }
             return View(servico);
         }
@@ -111,7 +150,8 @@ namespace GestaoTarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View("NoteEditarS", servico);
+                //return RedirectToAction(nameof(Index));
             }
             return View(servico);
         }
@@ -142,7 +182,8 @@ namespace GestaoTarefas.Controllers
             var servico = await _context.Servico.FindAsync(id);
             _context.Servico.Remove(servico);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View("NoteApagar", servico);
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool ServicoExists(int id)

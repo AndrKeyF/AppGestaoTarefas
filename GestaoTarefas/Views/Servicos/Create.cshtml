@@ -1,7 +1,7 @@
 ﻿@model GestaoTarefas.Models.Servico
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar";
 }
 
 <h1>Criar</h1>
@@ -18,7 +18,8 @@
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-danger" />|
+                <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
             </div>
         </form>
     </div>

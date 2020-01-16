@@ -1,10 +1,10 @@
 ﻿@model GestaoTarefas.Models.Servico
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar";
 }
 
-<h1>Apagar</h1>
+    <h1>Eliminar</h1>
 
 <h3>Tem acerteza que quer apagar?</h3>
 <div>
@@ -21,7 +21,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ServicoId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Voltar</a>
+        <input type="submit" value="Apagar" class="btn btn-primary" /> |
+        <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
     </form>
 </div>

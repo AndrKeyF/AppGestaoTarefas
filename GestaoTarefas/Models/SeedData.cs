@@ -18,7 +18,7 @@ namespace GestaoTarefas.Models
         {
             PopulateCargo(db);
             PopulateFuncionario(db);
-
+            PopulateServico(db);
         }
 
       private static void PopulateCargo(GestaoTarefasDbContext db)
@@ -38,8 +38,24 @@ namespace GestaoTarefas.Models
 
             db.SaveChanges();
         }
+
+        private static void PopulateServico(GestaoTarefasDbContext db)
+        {
+            if (db.Servico.Any()) return;
+
+            db.Servico.AddRange(
+                new Servico { Nome = "Secretaria" },
+                new Servico { Nome = "Direção" },
+                new Servico { Nome = "Bar" },
+                new Servico { Nome = "Cantina" }
+                
+
+            );
+
+            db.SaveChanges();
+        }
         
-        
+
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
         {
 
