@@ -1,4 +1,4 @@
-﻿@model PaginationViewModelServico
+﻿@model PaginatedList<GestaoTarefas.Models.Servico>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,16 +9,26 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Criar Novo</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Pesquisar: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <a asp-action="Index" class="btn btn-outline-primary">X</a> | <input type="submit" value="Procurar" class="btn btn-success" />
+
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                Nome
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NomeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nome</a>
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Servicos)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -33,3 +43,24 @@
         }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-info @prevDisabled">
+    Anterior
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-info @nextDisabled">
+    Próximo
+</a>
+<p></p>

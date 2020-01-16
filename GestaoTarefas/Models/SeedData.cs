@@ -17,6 +17,8 @@ namespace GestaoTarefas.Models
         public static void Populate(GestaoTarefasDbContext db)
         {
             PopulateCargo(db);
+            PopulateFuncionario(db);
+            PopulateServico(db);
         }
 
       private static void PopulateCargo(GestaoTarefasDbContext db)
@@ -53,7 +55,7 @@ namespace GestaoTarefas.Models
             db.SaveChanges();
         }
         
-        /*
+
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
         {
 

@@ -6,18 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoTarefas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestaoTarefas.Controllers
 {
-    
+    [Authorize(Policy = "CanManageGestaoTarefas")]
     public class ServicosController : Controller
     {
-
-        private int NUMBER_PAGES_BEFORE_AND_AFTER = 5;
-        private decimal NUMBER_SERV_PER_PAGE = 5;
-        private int SERV_PER_PAGE = 5;
-
-
         private readonly GestaoTarefasDbContext _context;
 
         public ServicosController(GestaoTarefasDbContext context)
@@ -26,18 +21,44 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Servicos
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            decimal numberServicos = _context.Servico.Count();
-            PaginationViewModelServico vm = new PaginationViewModelServico
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
             {
-                Servicos = _context.Servico.OrderBy(p => p.Nome).Skip((page - 1) * SERV_PER_PAGE).Take(SERV_PER_PAGE),
-                CurrentPage = page,
-                FirstPageShow = Math.Max(1, page - NUMBER_PAGES_BEFORE_AND_AFTER),
-                TotalPages = (int)Math.Ceiling(numberServicos / NUMBER_SERV_PER_PAGE)
-            };
-            vm.LastPageShow = Math.Min(vm.TotalPages, page + NUMBER_PAGES_BEFORE_AND_AFTER);
-            return View(vm);
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var servicos = from s in _context.Servico
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                servicos = servicos.Where(s => s.Nome.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    servicos = servicos.OrderByDescending(s => s.Nome);
+                    break;
+
+                default:
+                    servicos = servicos.OrderBy(s => s.Nome);
+                    break;
+            }
+
+
+
+            int pageSize = 5;
+            return View(await PaginatedList<Servico>.CreateAsync(servicos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 
