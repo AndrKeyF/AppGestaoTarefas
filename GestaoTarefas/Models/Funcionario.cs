@@ -11,7 +11,7 @@ namespace GestaoTarefas.Models
         public int FuncionarioId { get; set; }
 
         [Required(ErrorMessage = "Introduza o nome")]
-        [StringLength(200, MinimumLength = 10)]
+        [StringLength(200, MinimumLength = 10, ErrorMessage = "Nome inválido, tem de conter no mínimo 10 caracteres")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Introduza o Telemóvel")]
