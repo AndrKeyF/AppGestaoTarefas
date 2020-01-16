@@ -123,6 +123,7 @@ namespace GestaoTarefas.Controllers
 
             var funcionario = await _context.Funcionario
                 .Include(f => f.Cargo)
+                .Include(s => s.Departamento)
                 .FirstOrDefaultAsync(m => m.FuncionarioId == id);
             if (funcionario == null)
             {
@@ -136,6 +137,7 @@ namespace GestaoTarefas.Controllers
         public IActionResult Create()
         {
             ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome");
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
             return View();
         }
 
@@ -144,7 +146,7 @@ namespace GestaoTarefas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FuncionarioId,Nome,Telemovel,CC,Email,CargoId")] Funcionario funcionario)
+        public async Task<IActionResult> Create([Bind("FuncionarioId,Nome,Telemovel,CC,Email,CargoId,DepartamentoId")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
@@ -154,6 +156,7 @@ namespace GestaoTarefas.Controllers
                 return View("Note", funcionario);
             }
             ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome", funcionario.DepartamentoId);
             return View(funcionario);
         }
 
@@ -171,6 +174,7 @@ namespace GestaoTarefas.Controllers
                 return NotFound();
             }
             ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome", funcionario.DepartamentoId);
             return View(funcionario);
         }
 
@@ -179,7 +183,7 @@ namespace GestaoTarefas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FuncionarioId,Nome,Telemovel,CC,Email,CargoId")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(int id, [Bind("FuncionarioId,Nome,Telemovel,CC,Email,CargoId,DepartamentoId")] Funcionario funcionario)
         {
             if (id != funcionario.FuncionarioId)
             {
@@ -208,6 +212,7 @@ namespace GestaoTarefas.Controllers
                 return View("NoteE", funcionario);
             }
             ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome", funcionario.DepartamentoId);
             return View(funcionario);
         }
 
@@ -221,6 +226,7 @@ namespace GestaoTarefas.Controllers
 
             var funcionario = await _context.Funcionario
                 .Include(f => f.Cargo)
+                .Include(s => s.Departamento)
                 .FirstOrDefaultAsync(m => m.FuncionarioId == id);
             if (funcionario == null)
             {

@@ -10,5 +10,7 @@ namespace GestaoTarefas.Models
         public int ServicoId { get; set; }
 
         public string Nome { get; set; }
+
+        public ICollection<Departamento> Departamentos { get; set; } //tabela associado
     }
 }
