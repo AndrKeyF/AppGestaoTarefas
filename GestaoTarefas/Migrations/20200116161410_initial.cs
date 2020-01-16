@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GestaoTarefas.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,12 +25,31 @@ namespace GestaoTarefas.Migrations
                 {
                     ServicoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: false)
-                    
+                    Nome = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Servico", x => x.ServicoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departamento",
+                columns: table => new
+                {
+                    DepartamentoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(maxLength: 100, nullable: false),
+                    ServicoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departamento", x => x.DepartamentoId);
+                    table.ForeignKey(
+                        name: "FK_Departamento_Servico_ServicoId",
+                        column: x => x.ServicoId,
+                        principalTable: "Servico",
+                        principalColumn: "ServicoId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,7 +62,8 @@ namespace GestaoTarefas.Migrations
                     Telemovel = table.Column<string>(nullable: false),
                     CC = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    CargoId = table.Column<int>(nullable: false)
+                    CargoId = table.Column<int>(nullable: false),
+                    DepartamentoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,12 +74,28 @@ namespace GestaoTarefas.Migrations
                         principalTable: "Cargo",
                         principalColumn: "CargoId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Funcionario_Departamento_DepartamentoId",
+                        column: x => x.DepartamentoId,
+                        principalTable: "Departamento",
+                        principalColumn: "DepartamentoId",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Departamento_ServicoId",
+                table: "Departamento",
+                column: "ServicoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Funcionario_CargoId",
                 table: "Funcionario",
                 column: "CargoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Funcionario_DepartamentoId",
+                table: "Funcionario",
+                column: "DepartamentoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -69,10 +104,13 @@ namespace GestaoTarefas.Migrations
                 name: "Funcionario");
 
             migrationBuilder.DropTable(
-                name: "Servico");
+                name: "Cargo");
 
             migrationBuilder.DropTable(
-                name: "Cargo");
+                name: "Departamento");
+
+            migrationBuilder.DropTable(
+                name: "Servico");
         }
     }
 }

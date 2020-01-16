@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoTarefas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestaoTarefas.Controllers
 {
+    [Authorize(Policy = "CanManageGestaoTarefas")]
     public class DepartamentosController : Controller
     {
         private readonly GestaoTarefasDbContext _context;
@@ -19,10 +21,55 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Departamentos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var gestaoTarefasDbContext = _context.Departamento.Include(d => d.Servico);
-            return View(await gestaoTarefasDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["ServicosSortParm"] = String.IsNullOrEmpty(sortOrder) ? "servico_desc" : "servico";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var departamentos = from d in _context.Departamento.Include(d => d.Servico)
+                               select d;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                departamentos = departamentos.Where(d => d.Nome.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    departamentos = departamentos.OrderByDescending(d => d.Nome);
+                    break;
+                case "servico_desc":
+                    departamentos = departamentos.OrderByDescending(d => d.Servico);
+                    break;
+                case "servico":
+                    departamentos = departamentos.OrderBy(d => d.Servico);
+                    break;
+
+                default:
+                    departamentos = departamentos.OrderBy(d => d.Nome);
+                    break;
+            }
+
+            /*int CARG_PER_PAGE = 3;
+            int NUMBER_PAGES_BEFORE_AND_AFTER=1;
+
+            return View(await PaginationVMCargo<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, CARG_PER_PAGE, NUMBER_PAGES_BEFORE_AND_AFTER));
+            */
+
+            int pageSize = 5;
+            return View(await PaginatedList<Departamento>.CreateAsync(departamentos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Departamentos/Details/5
@@ -62,7 +109,8 @@ namespace GestaoTarefas.Controllers
             {
                 _context.Add(departamento);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return View("Note", departamento);
             }
             ViewData["ServicoId"] = new SelectList(_context.Servico, "ServicoId", "ServicoId", departamento.ServicoId);
             return View(departamento);
@@ -115,7 +163,8 @@ namespace GestaoTarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return View("NoteE", departamento);
             }
             ViewData["ServicoId"] = new SelectList(_context.Servico, "ServicoId", "ServicoId", departamento.ServicoId);
             return View(departamento);
@@ -148,7 +197,8 @@ namespace GestaoTarefas.Controllers
             var departamento = await _context.Departamento.FindAsync(id);
             _context.Departamento.Remove(departamento);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return View("NoteD", departamento);
         }
 
         private bool DepartamentoExists(int id)

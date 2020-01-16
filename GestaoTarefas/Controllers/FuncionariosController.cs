@@ -53,6 +53,7 @@ namespace GestaoTarefas.Controllers
             ViewData["TeleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Telemovel" : "Telemovel desc";
             ViewData["EmailSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Email" : "Email desc";
             ViewData["CargoSortParm"] = String.IsNullOrEmpty(sortOrder) ? "CargoNome" : "CargoNome desc";
+            ViewData["DepartamentoSortParm"] = String.IsNullOrEmpty(sortOrder) ? "DepNome" : "DepNome desc";
 
             if (searchString != null)
             {
@@ -65,7 +66,7 @@ namespace GestaoTarefas.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var funcionarios = from f in _context.Funcionario.Include(f => f.Cargo)
+            var funcionarios = from f in _context.Funcionario.Include(f => f.Cargo).Include( f => f.Departamento)
                                select f;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -73,7 +74,8 @@ namespace GestaoTarefas.Controllers
                                        || f.Telemovel.Contains(searchString)
                                        || f.CC.Contains(searchString)
                                        || f.Email.Contains(searchString)
-                                       || f.Cargo.Nome.Contains(searchString));
+                                       || f.Cargo.Nome.Contains(searchString)
+                                       || f.Departamento.Nome.Contains(searchString));
             }
             switch (sortOrder)
             {
@@ -90,22 +92,28 @@ namespace GestaoTarefas.Controllers
                     funcionarios = funcionarios.OrderBy(f => f.Telemovel);
                     break;
                 case "Telemovel desc":
-                    funcionarios = funcionarios.OrderByDescending(s => s.Telemovel);
+                    funcionarios = funcionarios.OrderByDescending(f => f.Telemovel);
                     break;
                 case "Email":
-                    funcionarios = funcionarios.OrderBy(s => s.Email);
+                    funcionarios = funcionarios.OrderBy(f => f.Email);
                     break;
                 case "Email desc":
-                    funcionarios = funcionarios.OrderByDescending(s => s.Email);
+                    funcionarios = funcionarios.OrderByDescending(f => f.Email);
                     break;
                 case "CargoNome":
                     funcionarios = funcionarios.OrderBy(s => s.Cargo.Nome);
                     break;
                 case "CargoNome desc":
-                    funcionarios = funcionarios.OrderByDescending(s => s.Cargo.Nome);
+                    funcionarios = funcionarios.OrderByDescending(f => f.Cargo.Nome);
+                    break;
+                case "DepNome":
+                    funcionarios = funcionarios.OrderBy(f => f.Departamento.Nome);
+                    break;
+                case "DepNome desc":
+                    funcionarios = funcionarios.OrderByDescending(f => f.Departamento.Nome);
                     break;
                 default:
-                    funcionarios = funcionarios.OrderBy(s => s.Nome);
+                    funcionarios = funcionarios.OrderBy(f => f.Nome);
                     break;
             }
 

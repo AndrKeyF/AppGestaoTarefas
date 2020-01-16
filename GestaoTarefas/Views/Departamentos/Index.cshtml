@@ -1,41 +1,71 @@
-﻿@model IEnumerable<GestaoTarefas.Models.Departamento>
+﻿@model PaginatedList<GestaoTarefas.Models.Departamento>
+
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Departamentos";
 }
 
-<h1>Index</h1>
+<p> </p>
+<h1>Departamentos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+
+    <a asp-action="Create" class="btn btn-primary">Criar Novo</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Pesquisar: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <a asp-action="Index" class="btn btn-outline-primary">X</a> |
+            <input type="submit" value="Procurar" class="btn btn-success" />
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nome</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Servico)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ServicosSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Serviço</a>
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Servico.ServicoId)
+                @Html.DisplayFor(modelItem => item.Servico.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DepartamentoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DepartamentoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DepartamentoId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.DepartamentoId" class="btn btn-warning">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.DepartamentoId" class="btn btn-info">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.DepartamentoId" class="btn btn-primary">Apagar</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-info @prevDisabled">Anterior</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-info @nextDisabled">Próximo</a>
+<p></p>
