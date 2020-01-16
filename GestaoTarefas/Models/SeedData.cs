@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,18 @@ namespace GestaoTarefas.Models
 {
     public static class SeedData
     {
+        private const string ANDRE_ROLE = "andr";
+        private const string CRIS_ROLE = "cris";
+        private const string TIAGO_ROLE = "tig";
+
         public static void Populate(GestaoTarefasDbContext db)
         {
             PopulateCargo(db);
             PopulateFuncionario(db);
-
+            PopulateServico(db);
         }
 
-        private static void PopulateCargo(GestaoTarefasDbContext db)
+      private static void PopulateCargo(GestaoTarefasDbContext db)
         {
             if (db.Cargo.Any()) return;
 
@@ -33,8 +38,24 @@ namespace GestaoTarefas.Models
 
             db.SaveChanges();
         }
+
+        private static void PopulateServico(GestaoTarefasDbContext db)
+        {
+            if (db.Servico.Any()) return;
+
+            db.Servico.AddRange(
+                new Servico { Nome = "Secretaria" },
+                new Servico { Nome = "Direção" },
+                new Servico { Nome = "Bar" },
+                new Servico { Nome = "Cantina" }
+                
+
+            );
+
+            db.SaveChanges();
+        }
         
-        
+
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
         {
 
@@ -136,6 +157,102 @@ namespace GestaoTarefas.Models
 
             db.SaveChanges();
         }
+
+
+        ////////////User Login
+        public static async Task PopulateUsersAsync(UserManager<IdentityUser> userManager)  //names
+        {
+            const string ANDRE_USERNAME = "andre@ipg.pt";
+            const string ANDRE_PASSWORD = "Secret123$";
+
+            const string CRIS_USERNAME = "cristiana@ipg.pt";
+            const string CRIS_PASSWORD = "Secret123$";
+
+
+            const string TIAGO_USERNAME = "tiago@ipg.pt";
+            const string TIAGO_PASSWORD = "Secret123$";
+
+
+            IdentityUser user = await userManager.FindByNameAsync(ANDRE_USERNAME);//await -esperar
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = ANDRE_USERNAME,
+                    Email = ANDRE_USERNAME
+                };
+
+                await userManager.CreateAsync(user, ANDRE_PASSWORD);
+            }
+
+            if (!await userManager.IsInRoleAsync(user, ANDRE_ROLE))
+            {
+                await userManager.AddToRoleAsync(user, ANDRE_ROLE);
+            }
+
+            user = await userManager.FindByNameAsync(ANDRE_USERNAME);
+
+
+
+            user = await userManager.FindByNameAsync(CRIS_USERNAME);
+
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = CRIS_USERNAME,
+                    Email = CRIS_USERNAME
+                };
+
+                await userManager.CreateAsync(user, CRIS_PASSWORD);
+            }
+
+            if (!await userManager.IsInRoleAsync(user, CRIS_ROLE))
+            {
+                await userManager.AddToRoleAsync(user, CRIS_ROLE);
+            }
+
+
+
+            user = await userManager.FindByNameAsync(TIAGO_USERNAME);
+
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = TIAGO_USERNAME,
+                    Email = TIAGO_USERNAME
+                };
+
+                await userManager.CreateAsync(user, TIAGO_PASSWORD);
+            }
+
+            if (!await userManager.IsInRoleAsync(user, TIAGO_ROLE))
+            {
+                await userManager.AddToRoleAsync(user, TIAGO_ROLE);
+            }
+        }
+
+        public static async Task CreateRolesAsync(RoleManager<IdentityRole> roleManager)
+        {
+
+
+            if (!await roleManager.RoleExistsAsync(ANDRE_ROLE))
+            {
+                await roleManager.CreateAsync(new IdentityRole(ANDRE_ROLE));
+            }
+
+            if (!await roleManager.RoleExistsAsync(CRIS_ROLE))
+            {
+                await roleManager.CreateAsync(new IdentityRole(CRIS_ROLE));
+            }
+
+            if (!await roleManager.RoleExistsAsync(TIAGO_ROLE))
+            {
+                await roleManager.CreateAsync(new IdentityRole(TIAGO_ROLE));
+            }
+        }
+    
 
     }
 }

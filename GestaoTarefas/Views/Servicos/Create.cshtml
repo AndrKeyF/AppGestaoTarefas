@@ -1,12 +1,12 @@
 ﻿@model GestaoTarefas.Models.Servico
 
 @{
-    ViewData["Title"] = "Criar Novo";
+    ViewData["Title"] = "Criar";
 }
 
 <h1>Criar</h1>
 
-<h4>Serviços</h4>
+<h4>Servico</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,30 +17,16 @@
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Prioridade" /> @Html.DisplayNameFor(model => model.Prioridade)
-                </label>
-            </div>
             <div class="form-group">
-                <label asp-for="Datain" class="control-label"></label>
-                <input asp-for="Datain" class="form-control" />
-                <span asp-validation-for="Datain" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Datafim" class="control-label"></label>
-                <input asp-for="Datafim" class="form-control" />
-                <span asp-validation-for="Datafim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Criar" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-danger" />|
+                <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Voltar</a>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

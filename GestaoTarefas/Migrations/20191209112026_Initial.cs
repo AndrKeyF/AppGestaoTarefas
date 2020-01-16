@@ -26,10 +26,8 @@ namespace GestaoTarefas.Migrations
                 {
                     ServicoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: false),
-                    Prioridade = table.Column<bool>(nullable: false),
-                    Datain = table.Column<DateTime>(nullable: false),
-                    Datafim = table.Column<DateTime>(nullable: false)
+                    Nome = table.Column<string>(nullable: false)
+                    
                 },
                 constraints: table =>
                 {

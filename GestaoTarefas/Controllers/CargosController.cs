@@ -6,12 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoTarefas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestaoTarefas.Controllers
 {
+    [Authorize(Policy = "CanManageGestaoTarefas")]
+    //[Authorize(Roles = "andr, cris,tig ")]
     public class CargosController : Controller
     {
+        /*
+        private int CARG_PER_PAGE = 5;// nº por pag
+        private decimal NUMBER_CARG_PER_PAGE = 3;//nº paginas
+        private int NUMBER_PAGES_BEFORE_AND_AFTER = 2;
+        */
+
         private readonly GestaoTarefasDbContext _context;
+       
 
         public CargosController(GestaoTarefasDbContext context)
         {
@@ -19,10 +29,63 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Cargos
-        public async Task<IActionResult> Index()
+       /* public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Cargo.ToListAsync());
+            decimal numberCargos = _context.Cargo.Count();
+            PaginationVMCargo vm = new PaginationVMCargo
+            {
+                Cargos = _context.Cargo.OrderBy(p => p.Nome).Skip((page - 1) * CARG_PER_PAGE).Take(CARG_PER_PAGE),
+                CurrentPage = page,
+                FirstPageShow = Math.Max(1, page - NUMBER_PAGES_BEFORE_AND_AFTER),
+                TotalPages = (int)Math.Ceiling(numberCargos / NUMBER_CARG_PER_PAGE)
+            };
+            vm.LastPageShow = Math.Min(vm.TotalPages, page + NUMBER_PAGES_BEFORE_AND_AFTER);
+            return View(vm);
+        }*/
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var cargos = from c in _context.Cargo
+                           select c;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                cargos = cargos.Where(c => c.Nome.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    cargos = cargos.OrderByDescending(c => c.Nome);
+                    break;
+                
+                default:
+                    cargos = cargos.OrderBy(c => c.Nome);
+                    break;
+            }
+            
+            /*int CARG_PER_PAGE = 3;
+            int NUMBER_PAGES_BEFORE_AND_AFTER=1;
+
+            return View(await PaginationVMCargo<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, CARG_PER_PAGE, NUMBER_PAGES_BEFORE_AND_AFTER));
+            */
+
+            int pageSize = 5;
+            return View(await PaginatedList<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
 
         // GET: Cargos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -59,7 +122,8 @@ namespace GestaoTarefas.Controllers
             {
                 _context.Add(cargo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View("Note", cargo);
+                //return RedirectToAction(nameof(Index));
             }
             return View(cargo);
         }
@@ -110,7 +174,8 @@ namespace GestaoTarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return View("NoteE", cargo);
             }
             return View(cargo);
         }
@@ -141,7 +206,8 @@ namespace GestaoTarefas.Controllers
             var cargo = await _context.Cargo.FindAsync(id);
             _context.Cargo.Remove(cargo);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View("NoteD", cargo);
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool CargoExists(int id)
@@ -149,4 +215,5 @@ namespace GestaoTarefas.Controllers
             return _context.Cargo.Any(e => e.CargoId == id);
         }
     }
+   
 }

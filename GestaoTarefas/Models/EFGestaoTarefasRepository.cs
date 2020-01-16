@@ -15,6 +15,8 @@ namespace GestaoTarefas.Models
             }
 
             public IEnumerable<Funcionario> Funcionarios => db.Funcionario;
-        }
+
+            public IEnumerable<Servico> Servicos => db.Servico;
+    }
     
 }

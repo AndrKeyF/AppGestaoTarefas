@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestaoTarefas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestaoTarefas.Controllers
 {
+    [Authorize(Policy = "CanManageGestaoTarefas")]
     public class ServicosController : Controller
     {
         private readonly GestaoTarefasDbContext _context;
@@ -18,13 +20,50 @@ namespace GestaoTarefas.Controllers
             _context = context;
         }
 
-        // GET: Servico
-        public async Task<IActionResult> Index()
+        // GET: Servicos
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Servico.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var servicos = from s in _context.Servico
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                servicos = servicos.Where(s => s.Nome.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    servicos = servicos.OrderByDescending(s => s.Nome);
+                    break;
+
+                default:
+                    servicos = servicos.OrderBy(s => s.Nome);
+                    break;
+            }
+
+
+
+            int pageSize = 5;
+            return View(await PaginatedList<Servico>.CreateAsync(servicos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: Servico/Details/5
+
+
+        // GET: Servicos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,29 +81,30 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Create
+        // GET: Servicos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Servico/Create
+        // POST: Servicos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServicoId,Nome,Prioridade,Datain,Datafim")] Servico servico)
+        public async Task<IActionResult> Create([Bind("ServicoId,Nome")] Servico servico)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(servico);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync(); 
+                return View("NoteCriarS", servico);
+                //return RedirectToAction(nameof(Index));
             }
             return View(servico);
         }
 
-        // GET: Servico/Edit/5
+        // GET: Servicos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,12 +120,12 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // POST: Servico/Edit/5
+        // POST: Servicos/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServicoId,Nome,Prioridade,Datain,Datafim")] Servico servico)
+        public async Task<IActionResult> Edit(int id, [Bind("ServicoId,Nome")] Servico servico)
         {
             if (id != servico.ServicoId)
             {
@@ -110,12 +150,13 @@ namespace GestaoTarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View("NoteEditarS", servico);
+                //return RedirectToAction(nameof(Index));
             }
             return View(servico);
         }
 
-        // GET: Servico/Delete/5
+        // GET: Servicos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +174,7 @@ namespace GestaoTarefas.Controllers
             return View(servico);
         }
 
-        // POST: Servico/Delete/5
+        // POST: Servicos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -141,7 +182,8 @@ namespace GestaoTarefas.Controllers
             var servico = await _context.Servico.FindAsync(id);
             _context.Servico.Remove(servico);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View("NoteApagar", servico);
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool ServicoExists(int id)
