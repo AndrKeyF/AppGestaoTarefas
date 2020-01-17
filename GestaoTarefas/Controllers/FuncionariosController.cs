@@ -144,8 +144,8 @@ namespace GestaoTarefas.Controllers
         // GET: Funcionarios/Create
         public IActionResult Create()
         {
-            ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome");
-            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
+            ViewData["CargoId"] = new SelectList(_context.Cargo.OrderBy(c => c.Nome), "CargoId", "Nome");
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento.OrderBy(d => d.Nome), "DepartamentoId", "Nome");
             return View();
         }
 
@@ -163,8 +163,8 @@ namespace GestaoTarefas.Controllers
                 //return RedirectToAction(nameof(Index));
                 return View("Note", funcionario);
             }
-            ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
-            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome", funcionario.DepartamentoId);
+            ViewData["CargoId"] = new SelectList(_context.Cargo.OrderBy(c => c.Nome), "CargoId", "Nome", funcionario.CargoId);
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento.OrderBy(d => d.Nome), "DepartamentoId", "Nome", funcionario.DepartamentoId);
             return View(funcionario);
         }
 
@@ -181,8 +181,8 @@ namespace GestaoTarefas.Controllers
             {
                 return NotFound();
             }
-            ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
-            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome", funcionario.DepartamentoId);
+            ViewData["CargoId"] = new SelectList(_context.Cargo.OrderBy(c => c.Nome), "CargoId", "Nome", funcionario.CargoId);
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento.OrderBy(d => d.Nome), "DepartamentoId", "Nome", funcionario.DepartamentoId);
             return View(funcionario);
         }
 
@@ -219,8 +219,8 @@ namespace GestaoTarefas.Controllers
                 //return RedirectToAction(nameof(Index));
                 return View("NoteE", funcionario);
             }
-            ViewData["CargoId"] = new SelectList(_context.Cargo, "CargoId", "Nome", funcionario.CargoId);
-            ViewData["DepartamentoId"] = new SelectList(_context.Departamento, "DepartamentoId", "Nome", funcionario.DepartamentoId);
+            ViewData["CargoId"] = new SelectList(_context.Cargo.OrderBy(c => c.Nome), "CargoId", "Nome", funcionario.CargoId);
+            ViewData["DepartamentoId"] = new SelectList(_context.Departamento.OrderBy(d => d.Nome), "DepartamentoId", "Nome", funcionario.DepartamentoId);
             return View(funcionario);
         }
 
