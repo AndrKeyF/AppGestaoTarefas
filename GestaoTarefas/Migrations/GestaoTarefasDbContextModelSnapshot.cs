@@ -111,13 +111,13 @@ namespace GestaoTarefas.Migrations
                     b.HasOne("GestaoTarefas.Models.Cargo", "Cargo")
                         .WithMany("Funcionarios")
                         .HasForeignKey("CargoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("GestaoTarefas.Models.Departamento", "Departamento")
                         .WithMany("Funcionarios")
                         .HasForeignKey("DepartamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

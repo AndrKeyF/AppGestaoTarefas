@@ -66,13 +66,13 @@ namespace GestaoTarefas.Migrations
                         column: x => x.CargoId,
                         principalTable: "Cargo",
                         principalColumn: "CargoId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Funcionario_Departamento_DepartamentoId",
                         column: x => x.DepartamentoId,
                         principalTable: "Departamento",
                         principalColumn: "DepartamentoId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
