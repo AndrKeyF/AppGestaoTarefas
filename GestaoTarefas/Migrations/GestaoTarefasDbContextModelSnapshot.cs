@@ -47,12 +47,7 @@ namespace GestaoTarefas.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("ServicoId")
-                        .HasColumnType("int");
-
                     b.HasKey("DepartamentoId");
-
-                    b.HasIndex("ServicoId");
 
                     b.ToTable("Departamento");
                 });
@@ -109,15 +104,6 @@ namespace GestaoTarefas.Migrations
                     b.HasKey("ServicoId");
 
                     b.ToTable("Servico");
-                });
-
-            modelBuilder.Entity("GestaoTarefas.Models.Departamento", b =>
-                {
-                    b.HasOne("GestaoTarefas.Models.Servico", "Servico")
-                        .WithMany("Departamentos")
-                        .HasForeignKey("ServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("GestaoTarefas.Models.Funcionario", b =>

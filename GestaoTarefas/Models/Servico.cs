@@ -11,6 +11,5 @@ namespace GestaoTarefas.Models
 
         public string Nome { get; set; }
 
-        public ICollection<Departamento> Departamentos { get; set; } //tabela associado
     }
 }

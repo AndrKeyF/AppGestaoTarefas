@@ -16,7 +16,5 @@ namespace GestaoTarefas.Models
 
         public ICollection<Funcionario> Funcionarios { get; set; }
 
-        public int ServicoId { get; set; }
-        public Servico Servico { get; set; }
     }
 }

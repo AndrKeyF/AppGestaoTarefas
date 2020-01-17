@@ -28,7 +28,6 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nome</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ServicosSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Serviço</a>
             </th>
         </tr>
     </thead>
@@ -40,7 +39,6 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Servico.Nome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.DepartamentoId" class="btn btn-warning">Editar</a> |

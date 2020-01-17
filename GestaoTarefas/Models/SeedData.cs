@@ -58,83 +58,20 @@ namespace GestaoTarefas.Models
 
         private static void PopulateDepartamento(GestaoTarefasDbContext db)
         {
-
             if (db.Departamento.Any()) return;
 
-            Servico servico = db.Servico
-                .FirstOrDefault(m => m.Nome == "Secretaria");
-            if (servico == null)
-            {
-                db.Servico.AddRange(
-                servico = new Servico { Nome = "Secretaria" }
-
-                );
-                db.SaveChanges();
-            }
-
             db.Departamento.AddRange(
-                new Departamento { Nome = "Direção", ServicoId = servico.ServicoId }
-            );
-            db.SaveChanges();
+                new Departamento { Nome = "Professor" },
+                new Departamento { Nome = "Diretor" },
+                new Departamento { Nome = "Presidente" },
+                new Departamento { Nome = "Vice-Presidente" },
+                new Departamento { Nome = "Secretário" },
+                new Departamento { Nome = "Tesoureiro" },
+                new Departamento { Nome = "Auxiliar de Limpeza" }
 
-            //Departamento Direcao
-            Servico servico1 = db.Servico
-                .FirstOrDefault(m => m.Nome == "Direção");
-            if (servico1 == null)
-            {
-                db.Servico.AddRange(
-                servico1 = new Servico { Nome = "Direção" }
-
-                );
-                db.SaveChanges();
-            }
-
-            db.Departamento.AddRange(
-                new Departamento { Nome = "Informática", ServicoId = servico1.ServicoId },
-                new Departamento { Nome = "Gestão", ServicoId = servico1.ServicoId },
-                new Departamento { Nome = "Contabilidade", ServicoId = servico1.ServicoId },
-                new Departamento { Nome = "Desporto", ServicoId = servico1.ServicoId },
-                new Departamento { Nome = "Direção", ServicoId = servico1.ServicoId }
-            );
-            db.SaveChanges();
-
-            //Departamento bar
-            Servico servico2 = db.Servico
-                .FirstOrDefault(m => m.Nome == "Bar");
-            if (servico2 == null)
-            {
-                db.Servico.AddRange(
-                servico2 = new Servico { Nome = "Bar" }
-
-                );
-                db.SaveChanges();
-            }
-
-            db.Departamento.AddRange(
-                new Departamento { Nome = "Alimentar", ServicoId = servico2.ServicoId }
-                );
-            db.SaveChanges();
-
-            //Departamento cantina
-
-            Servico servico3 = db.Servico
-                .FirstOrDefault(m => m.Nome == "Cantina");
-            if (servico3 == null)
-            {
-                db.Servico.AddRange(
-                servico3 = new Servico { Nome = "Cantina" }
-
-                );
-                db.SaveChanges();
-            }
-
-            db.Departamento.AddRange(
-               new Departamento { Nome = "Alimentar", ServicoId = servico3.ServicoId }
             );
 
             db.SaveChanges();
-
-
         }
 
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
@@ -155,14 +92,6 @@ namespace GestaoTarefas.Models
                 departamento = new Departamento { Nome = "Informática" });
                 db.SaveChanges();
             }
-            else
-            {
-                db.Cargo.AddRange(
-                cargo = new Cargo { Nome = "" });
-                db.Departamento.AddRange(
-                departamento = new Departamento { Nome = "" });
-                db.SaveChanges();
-            }
 
             db.Funcionario.AddRange(
                             new Funcionario { Nome = "André Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId },
@@ -171,26 +100,8 @@ namespace GestaoTarefas.Models
                         );
 
             db.SaveChanges();
-            /*
-                        Departamento departamento = db.Departamento
-                           .FirstOrDefault(m => m.Nome == "Informática");
-                        if (departamento == null)
-                        {
-                            db.Departamento.AddRange(
-                            departamento = new Departamento { Nome = "Informática" }
-
-                            );
-                            db.SaveChanges();
-                        }
-
-            db.Funcionario.AddRange(
-                            new Funcionario { Nome = "André Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId },
-                            new Funcionario { Nome = "Filipe Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail1@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId },
-                            new Funcionario { Nome = "Paulo Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail2@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId }
-                        );
-
-                        db.SaveChanges();
-                        /*
+        
+                        
                                     //Cargo Diretor
                                     Cargo cargo1 = db.Cargo
                                        .FirstOrDefault(m => m.Nome == "Diretor");
@@ -334,7 +245,7 @@ namespace GestaoTarefas.Models
                                     );
 
                                     db.SaveChanges();
-                                    */
+                                    
         }
 
 

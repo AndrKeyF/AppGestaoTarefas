@@ -25,7 +25,6 @@ namespace GestaoTarefas.Controllers
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["ServicosSortParm"] = String.IsNullOrEmpty(sortOrder) ? "servico_desc" : "servico";
 
             if (searchString != null)
             {
@@ -38,7 +37,7 @@ namespace GestaoTarefas.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var departamentos = from d in _context.Departamento.Include(d => d.Servico)
+            var departamentos = from d in _context.Departamento
                                select d;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -50,13 +49,6 @@ namespace GestaoTarefas.Controllers
                 case "name_desc":
                     departamentos = departamentos.OrderByDescending(d => d.Nome);
                     break;
-                case "servico_desc":
-                    departamentos = departamentos.OrderByDescending(d => d.Servico);
-                    break;
-                case "servico":
-                    departamentos = departamentos.OrderBy(d => d.Servico);
-                    break;
-
                 default:
                     departamentos = departamentos.OrderBy(d => d.Nome);
                     break;
@@ -81,7 +73,6 @@ namespace GestaoTarefas.Controllers
             }
 
             var departamento = await _context.Departamento
-                .Include(d => d.Servico)
                 .FirstOrDefaultAsync(m => m.DepartamentoId == id);
             if (departamento == null)
             {
@@ -91,10 +82,10 @@ namespace GestaoTarefas.Controllers
             return View(departamento);
         }
 
+
         // GET: Departamentos/Create
         public IActionResult Create()
         {
-            ViewData["ServicoId"] = new SelectList(_context.Servico, "ServicoId", "ServicoId");
             return View();
         }
 
@@ -103,7 +94,7 @@ namespace GestaoTarefas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartamentoId,Nome,ServicoId")] Departamento departamento)
+        public async Task<IActionResult> Create([Bind("DepartamentoId,Nome")] Departamento departamento)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +103,6 @@ namespace GestaoTarefas.Controllers
                 //return RedirectToAction(nameof(Index));
                 return View("Note", departamento);
             }
-            ViewData["ServicoId"] = new SelectList(_context.Servico, "ServicoId", "ServicoId", departamento.ServicoId);
             return View(departamento);
         }
 
@@ -129,7 +119,6 @@ namespace GestaoTarefas.Controllers
             {
                 return NotFound();
             }
-            ViewData["ServicoId"] = new SelectList(_context.Servico, "ServicoId", "ServicoId", departamento.ServicoId);
             return View(departamento);
         }
 
@@ -138,7 +127,7 @@ namespace GestaoTarefas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DepartamentoId,Nome,ServicoId")] Departamento departamento)
+        public async Task<IActionResult> Edit(int id, [Bind("DepartamentoId,Nome")] Departamento departamento)
         {
             if (id != departamento.DepartamentoId)
             {
@@ -166,7 +155,6 @@ namespace GestaoTarefas.Controllers
                 //return RedirectToAction(nameof(Index));
                 return View("NoteE", departamento);
             }
-            ViewData["ServicoId"] = new SelectList(_context.Servico, "ServicoId", "ServicoId", departamento.ServicoId);
             return View(departamento);
         }
 
@@ -179,7 +167,6 @@ namespace GestaoTarefas.Controllers
             }
 
             var departamento = await _context.Departamento
-                .Include(d => d.Servico)
                 .FirstOrDefaultAsync(m => m.DepartamentoId == id);
             if (departamento == null)
             {

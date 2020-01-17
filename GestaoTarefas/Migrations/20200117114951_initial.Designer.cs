@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestaoTarefas.Migrations
 {
     [DbContext(typeof(GestaoTarefasDbContext))]
-    [Migration("20200116161410_initial")]
+    [Migration("20200117114951_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,12 +49,7 @@ namespace GestaoTarefas.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("ServicoId")
-                        .HasColumnType("int");
-
                     b.HasKey("DepartamentoId");
-
-                    b.HasIndex("ServicoId");
 
                     b.ToTable("Departamento");
                 });
@@ -111,15 +106,6 @@ namespace GestaoTarefas.Migrations
                     b.HasKey("ServicoId");
 
                     b.ToTable("Servico");
-                });
-
-            modelBuilder.Entity("GestaoTarefas.Models.Departamento", b =>
-                {
-                    b.HasOne("GestaoTarefas.Models.Servico", "Servico")
-                        .WithMany("Departamentos")
-                        .HasForeignKey("ServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("GestaoTarefas.Models.Funcionario", b =>
