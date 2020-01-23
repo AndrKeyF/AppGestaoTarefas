@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GestaoTarefas.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,13 +20,25 @@ namespace GestaoTarefas.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Departamento",
+                columns: table => new
+                {
+                    DepartamentoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departamento", x => x.DepartamentoId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Servico",
                 columns: table => new
                 {
                     ServicoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: false)
-                    
+                    Nome = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,7 +55,8 @@ namespace GestaoTarefas.Migrations
                     Telemovel = table.Column<string>(nullable: false),
                     CC = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    CargoId = table.Column<int>(nullable: false)
+                    CargoId = table.Column<int>(nullable: false),
+                    DepartamentoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,13 +66,24 @@ namespace GestaoTarefas.Migrations
                         column: x => x.CargoId,
                         principalTable: "Cargo",
                         principalColumn: "CargoId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Funcionario_Departamento_DepartamentoId",
+                        column: x => x.DepartamentoId,
+                        principalTable: "Departamento",
+                        principalColumn: "DepartamentoId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Funcionario_CargoId",
                 table: "Funcionario",
                 column: "CargoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Funcionario_DepartamentoId",
+                table: "Funcionario",
+                column: "DepartamentoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -73,6 +96,9 @@ namespace GestaoTarefas.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cargo");
+
+            migrationBuilder.DropTable(
+                name: "Departamento");
         }
     }
 }

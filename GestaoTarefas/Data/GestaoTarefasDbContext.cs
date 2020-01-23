@@ -18,6 +18,10 @@ namespace GestaoTarefas.Models
 
         public DbSet<Funcionario> Funcionario { get; set; }
 
+        public DbSet<GestaoTarefas.Models.Departamento> Departamento { get; set; }
+
         public DbSet<GestaoTarefas.Models.Servico> Servico { get; set; }
+
+   
     }
 }

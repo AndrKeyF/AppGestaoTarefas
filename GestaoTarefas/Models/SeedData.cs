@@ -17,8 +17,9 @@ namespace GestaoTarefas.Models
         public static void Populate(GestaoTarefasDbContext db)
         {
             PopulateCargo(db);
-            PopulateFuncionario(db);
             PopulateServico(db);
+            PopulateDepartamento(db);
+            PopulateFuncionario(db);
         }
 
       private static void PopulateCargo(GestaoTarefasDbContext db)
@@ -58,7 +59,25 @@ namespace GestaoTarefas.Models
 
             db.SaveChanges();
         }
-        
+
+        private static void PopulateDepartamento(GestaoTarefasDbContext db)
+        {
+            if (db.Departamento.Any()) return;
+
+            db.Departamento.AddRange(
+                new Departamento { Nome = "Informática" },
+                new Departamento { Nome = "Gestão" },
+                new Departamento { Nome = "Civil" },
+                new Departamento { Nome = "Direção" },
+                new Departamento { Nome = "Desporto" },
+                new Departamento { Nome = "Enfermagem" },
+                new Departamento { Nome = "Multimedia" },
+                new Departamento { Nome = "Contabilidade"}
+
+            );
+
+            db.SaveChanges();
+        }
 
         private static void PopulateFuncionario(GestaoTarefasDbContext db)
         {
@@ -67,100 +86,139 @@ namespace GestaoTarefas.Models
 
             Cargo cargo = db.Cargo
                 .FirstOrDefault(m => m.Nome == "Professor");
-            if (cargo == null)
+            Departamento departamento = db.Departamento
+               .FirstOrDefault(d => d.Nome == "Informática");
+            if (cargo == null || departamento == null)
             {
                 db.Cargo.AddRange(
-                cargo = new Cargo { Nome = "Professor" }
- 
-                );
+                cargo = new Cargo { Nome = "Professor" });
+
+                db.Departamento.AddRange(
+                departamento = new Departamento { Nome = "Informática" });
                 db.SaveChanges();
             }
 
             db.Funcionario.AddRange(
-                new Funcionario { Nome = "André Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo.CargoId },
-                new Funcionario { Nome = "Filipe Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail1@mail.pt", CargoId = cargo.CargoId },
-                new Funcionario { Nome = "Paulo Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail2@mail.pt", CargoId = cargo.CargoId }
-            );
+                new Funcionario { Nome = "André Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId },
+                new Funcionario { Nome = "Filipe Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail1@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId },
+                new Funcionario { Nome = "Paulo Teixeira", Telemovel = "912345678", CC = "12345678", Email = "mail2@mail.pt", CargoId = cargo.CargoId, DepartamentoId = departamento.DepartamentoId }
+                        );
 
-            //Cargo Diretor
-            Cargo cargo1 = db.Cargo
-               .FirstOrDefault(m => m.Nome == "Diretor");
-            if (cargo1 == null)
-            {
+            db.SaveChanges();
+//Cargo Diretor
+             Cargo cargo1 = db.Cargo
+                  .FirstOrDefault(m => m.Nome == "Diretor");
+            Departamento departamento1 = db.Departamento
+                  .FirstOrDefault(m => m.Nome == "Informática");
+            if (cargo1 == null || departamento1 == null)
+             {
                 db.Cargo.AddRange(
-                cargo1 = new Cargo { Nome = "Diretor" }
+                cargo1 = new Cargo { Nome = "Diretor" });
 
-                );
-                db.SaveChanges();
-            }
+                db.Departamento.AddRange(
+                departamento1 = new Departamento { Nome = "Informática" });
 
-            db.Funcionario.AddRange(
-                new Funcionario { Nome = "Cristiana Cardoso", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo1.CargoId }  
-            );
+                 db.SaveChanges();
+              }
 
+
+                 db.Funcionario.AddRange(
+                    new Funcionario { Nome = "Cristiana Cardoso", Telemovel = "912345678", CC = "12345678", Email = "mail3@mail.pt", CargoId = cargo1.CargoId, DepartamentoId = departamento1.DepartamentoId }  
+                 );
+            db.SaveChanges();
             //Cargo Presidente
             Cargo cargo2 = db.Cargo
-               .FirstOrDefault(m => m.Nome == "Presidente");
-            if (cargo2 == null)
-            {
+                  .FirstOrDefault(m => m.Nome == "Presidente");
+              Departamento departamento2 = db.Departamento
+                  .FirstOrDefault(m => m.Nome == "Secretaria");
+
+            if (cargo2 == null || departamento2 == null)
+              {
                 db.Cargo.AddRange(
-                cargo2 = new Cargo { Nome = "Presidente" }
+                cargo2 = new Cargo { Nome = "Presidente" });
 
-                );
-                db.SaveChanges();
-            }
+                db.Departamento.AddRange(
+                departamento2 = new Departamento { Nome = "Secretaria" });
 
-            db.Funcionario.AddRange(
-                new Funcionario { Nome = "Tiago Santos", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo2.CargoId }
-            );
+               db.SaveChanges();
+              }
 
+                      db.Funcionario.AddRange(
+                         new Funcionario { Nome = "Tiago Santos", Telemovel = "912345678", CC = "12345678", Email = "mail4@mail.pt", CargoId = cargo2.CargoId, DepartamentoId = departamento2.DepartamentoId }
+                      );
+            db.SaveChanges();
             //Cargo Auxiliar
 
             Cargo cargo3 = db.Cargo
-               .FirstOrDefault(m => m.Nome == "Auxiliar de Limpeza");
-            if (cargo3 == null)
+                 .FirstOrDefault(m => m.Nome == "Auxiliar de Limpeza");
+            Departamento departamento3 = db.Departamento
+               .FirstOrDefault(m => m.Nome == "Informática");
+            if (cargo3 == null || departamento3 == null)
             {
                 db.Cargo.AddRange(
-                cargo3 = new Cargo { Nome = "Auxiliar de Limpeza" }
+                cargo3 = new Cargo { Nome = "Auxiliar de Limpeza" });
+                db.Departamento.AddRange(
+                departamento3 = new Departamento { Nome = "Informática" });
 
-                );
+                db.SaveChanges();
+            }
+             
+                db.Funcionario.AddRange(
+                   new Funcionario { Nome = "Paula Pereira", Telemovel = "912345678", CC = "12345678", Email = "mail5@mail.pt", CargoId = cargo3.CargoId, DepartamentoId = departamento3.DepartamentoId },
+                   new Funcionario { Nome = "Ana Vitória", Telemovel = "912345678", CC = "12345678", Email = "mail6@mail.pt", CargoId = cargo3.CargoId, DepartamentoId = departamento3.DepartamentoId },
+                   new Funcionario { Nome = "Rui Carvalho", Telemovel = "912345678", CC = "12345678", Email = "mail7@mail.pt", CargoId = cargo3.CargoId, DepartamentoId = departamento3.DepartamentoId });
+
+            db.SaveChanges();
+
+            Cargo cargo3v2 = db.Cargo
+                .FirstOrDefault(m => m.Nome == "Auxiliar de Limpeza");
+            Departamento departamento3v2 = db.Departamento
+                .FirstOrDefault(m => m.Nome == "Direção");
+            if (cargo3v2 == null || departamento3v2 == null)
+            {
+                    db.Cargo.AddRange(
+                    cargo3v2 = new Cargo { Nome = "Auxiliar de Limpeza" });
+
+                    db.Departamento.AddRange(
+                    departamento3v2 = new Departamento { Nome = "Direção" });
                 db.SaveChanges();
             }
 
-            db.Funcionario.AddRange(
-                new Funcionario { Nome = "Paula Pereira", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
-                new Funcionario { Nome = "Ana Vitória", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
-                new Funcionario { Nome = "Rui Carvalho", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
-                new Funcionario { Nome = "Américo Costa", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId },
-                new Funcionario { Nome = "Laurinda Rocha", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo3.CargoId }
-
-            );
-
+                db.Funcionario.AddRange(
+                   new Funcionario { Nome = "Américo Costa", Telemovel = "912345678", CC = "12345678", Email = "mail8@mail.pt", CargoId = cargo3v2.CargoId, DepartamentoId = departamento3v2.DepartamentoId },
+                   new Funcionario { Nome = "Laurinda Rocha", Telemovel = "912345678", CC = "12345678", Email = "mail9@mail.pt", CargoId = cargo3v2.CargoId, DepartamentoId = departamento3v2.DepartamentoId });
             db.SaveChanges();
 
             //Cargo Secretário
             Cargo cargo4 = db.Cargo
-               .FirstOrDefault(m => m.Nome == "Secretário");
-            if (cargo4 == null)
-            {
-                db.Cargo.AddRange(
-                cargo4 = new Cargo { Nome = "Secretário" }
+                .FirstOrDefault(m => m.Nome == "Secretário");
+            Departamento departamento4 = db.Departamento
+                .FirstOrDefault(m => m.Nome == "Direção");
 
-                );
+            if (cargo4 == null || departamento4 == null)
+            {
+                 db.Cargo.AddRange(
+                 cargo4 = new Cargo { Nome = "Secretário" });
+
+                 db.Departamento.AddRange(
+                 departamento4 = new Departamento { Nome = "Direção" });
+                
                 db.SaveChanges();
             }
-
-            db.Funcionario.AddRange(
-                new Funcionario { Nome = "Paulo Cardoso", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
-                new Funcionario { Nome = "Amilcar Santos", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
-                new Funcionario { Nome = "Vera Orquidea", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
-                new Funcionario { Nome = "Roberto Adelino", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId },
-                new Funcionario { Nome = "Amélia Chique", Telemovel = "912345678", CC = "12345678", Email = "mail@mail.pt", CargoId = cargo4.CargoId }
-
+                
+                db.Funcionario.AddRange(
+                   new Funcionario { Nome = "Paulo Cardoso", Telemovel = "912345678", CC = "12345678", Email = "mailjklh@mail.pt", CargoId = cargo4.CargoId, DepartamentoId = departamento4.DepartamentoId },
+                   new Funcionario { Nome = "Amilcar Santos", Telemovel = "912345678", CC = "12345678", Email = "mail999@mail.pt", CargoId = cargo4.CargoId, DepartamentoId = departamento4.DepartamentoId },
+                   new Funcionario { Nome = "Vera Orquidea", Telemovel = "912345678", CC = "12345678", Email = "mail121@mail.pt", CargoId = cargo4.CargoId, DepartamentoId = departamento4.DepartamentoId },
+                   new Funcionario { Nome = "Roberto Adelino", Telemovel = "912345678", CC = "12345678", Email = "mail500@mail.pt", CargoId = cargo4.CargoId, DepartamentoId = departamento4.DepartamentoId },
+                   new Funcionario { Nome = "Amélia Chique", Telemovel = "912345678", CC = "12345678", Email = "mailwafaf@mail.pt", CargoId = cargo4.CargoId, DepartamentoId = departamento4.DepartamentoId }
             );
 
-            db.SaveChanges();
+                db.SaveChanges();
+                                    
         }
+
+
 
 
         ////////////User Login
