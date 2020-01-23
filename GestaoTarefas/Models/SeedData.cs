@@ -32,6 +32,10 @@ namespace GestaoTarefas.Models
                 new Cargo {Nome = "Vice-Presidente" },
                 new Cargo {Nome = "Secretário" },
                 new Cargo {Nome = "Tesoureiro" },
+                new Cargo { Nome = "Segurança"  },
+                new Cargo { Nome = "Rececionista" },
+                new Cargo { Nome = "Gestor" },
+                new Cargo { Nome = "Cozinheira" },
                 new Cargo {Nome = "Auxiliar de Limpeza"}
 
             );

@@ -14,11 +14,7 @@ namespace GestaoTarefas.Controllers
     //[Authorize(Roles = "andr, cris,tig ")]
     public class CargosController : Controller
     {
-        /*
-        private int CARG_PER_PAGE = 5;// nº por pag
-        private decimal NUMBER_CARG_PER_PAGE = 3;//nº paginas
-        private int NUMBER_PAGES_BEFORE_AND_AFTER = 2;
-        */
+        
 
         private readonly GestaoTarefasDbContext _context;
        
@@ -29,19 +25,6 @@ namespace GestaoTarefas.Controllers
         }
 
         // GET: Cargos
-       /* public async Task<IActionResult> Index(int page = 1)
-        {
-            decimal numberCargos = _context.Cargo.Count();
-            PaginationVMCargo vm = new PaginationVMCargo
-            {
-                Cargos = _context.Cargo.OrderBy(p => p.Nome).Skip((page - 1) * CARG_PER_PAGE).Take(CARG_PER_PAGE),
-                CurrentPage = page,
-                FirstPageShow = Math.Max(1, page - NUMBER_PAGES_BEFORE_AND_AFTER),
-                TotalPages = (int)Math.Ceiling(numberCargos / NUMBER_CARG_PER_PAGE)
-            };
-            vm.LastPageShow = Math.Min(vm.TotalPages, page + NUMBER_PAGES_BEFORE_AND_AFTER);
-            return View(vm);
-        }*/
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -76,12 +59,7 @@ namespace GestaoTarefas.Controllers
                     break;
             }
             
-            /*int CARG_PER_PAGE = 3;
-            int NUMBER_PAGES_BEFORE_AND_AFTER=1;
-
-            return View(await PaginationVMCargo<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, CARG_PER_PAGE, NUMBER_PAGES_BEFORE_AND_AFTER));
-            */
-
+            
             int pageSize = 5;
             return View(await PaginatedList<Cargo>.CreateAsync(cargos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
